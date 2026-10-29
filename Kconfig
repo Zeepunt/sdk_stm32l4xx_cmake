@@ -1,0 +1,3 @@
+mainmenu "STM32L4xx Configuration"
+
+rsource "sdk/Kconfig"

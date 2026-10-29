@@ -1,0 +1,73 @@
+menu "SDK Configuration"
+
+    config SDK_CMSIS
+        bool "CMSIS"
+        default y
+        help
+            Common Microcontroller Software Interface Standard
+
+    config SDK_CMSIS_DEVICE
+        bool "CMSIS Device Part"
+        depends on SDK_CMSIS
+        default y
+
+    config SDK_STM32L4XX_HAL_DRIVER
+        bool "STM32L4xx Series HAL Driver"
+        depends on SDK_CMSIS_DEVICE
+        default y
+
+        if SDK_STM32L4XX_HAL_DRIVER
+            choice
+                prompt "STM32L4xx MCU Selection"
+                default CHIP_STM32WLE5XX
+
+                config CHIP_STM32L475XX
+                    bool "STM32L475xx"
+            endchoice
+
+            config STM32_CHIP
+                string
+                default "STM32L475xx" if CHIP_STM32L475XX
+        endif
+
+    config SDK_BOARD
+        bool "Board"
+        depends on SDK_STM32L4XX_HAL_DRIVER
+        default y
+
+        if SDK_BOARD
+            choice
+                prompt "STM32L4xx Board Selection"
+                default BOART_CUSTOM
+
+                config BOART_CUSTOM
+                    bool "Custom"
+
+                config BOART_ATK_PANDORA
+                    bool "ATK Pandora"
+            endchoice
+        endif
+
+    config SDK_FREERTOS
+        bool "FreeRTOS Kernel"
+        depends on SDK_CMSIS
+        default y
+
+    config SDK_LPTIM_TICK
+        depends on SDK_STM32L4XX_HAL_DRIVER && SDK_FREERTOS
+        bool "LPTIM-Tick"
+        default y
+        help
+            Use LPTIM for the FreeRTOS tick instead of the SysTick Timer for ultra-low-power applications
+
+    config SDK_SEGGER_RTT
+        bool "Segger RTT Logger"
+        default y
+
+    config SDK_LVGL
+        bool "lvgl"
+        default n
+        help
+            Light and Versatile Graphics Library
+
+endmenu

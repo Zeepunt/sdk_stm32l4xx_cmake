@@ -1,0 +1,1 @@
+LVGL 版本：[9.6.0](https://github.com/lvgl/lvgl/releases/tag/v9.6.0)
